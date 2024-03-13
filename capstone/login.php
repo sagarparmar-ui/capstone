@@ -4,64 +4,44 @@ session_start();
 
 include('server/connection.php');
 
-
 // if(isset($_SESSION['logged_in'])){
 //   header('location: account.php');
 //   exit;
 // }
 
+if(isset($_POST['login_btn'])){
 
-
-if(isset($_POST['register'])){
-
-  $name= $_POST['name'];
   $email = $_POST['email'];
-  $password = $_POST['password'];
-  $confirmPassword = $_POST['confirmPassword'];
+  $password = md5($_POST['password']);
 
-  if($password !== $confirmPassword){
-    header('location: register.php?error=passwords dont match');
-  }
+  $stmt = $connection->prepare("SELECT user_id,user_name, user_email, user_password FROM users WHERE user_email = ? AND user_password = ? LIMIT 1");
 
-  else if(strlen($password) < 6){
-    header('location: register.php?error=password must be at least 6 character');
-  }
+  $stmt->bind_param('ss',$email,$password);
+  
 
-  else{
-      $stmt1 = $connection->prepare("SELECT count(*) FROM users where user_email=?");
-      $stmt1->bind_param('s',$email);
-      $stmt1->execute();
-      $stmt1->bind_result($num_rows);
-      $stmt1->store_result(); 
-      $stmt1->fetch();
+  if($stmt->execute()){
+    $stmt->bind_result($user_id,$user_name,$user_email,$user_password);
+    $stmt->store_result();
 
+    if($stmt->num_rows() == 1){
+      $stmt->fetch();
 
-      if($num_rows != 0){
-        header('location: register.php?error=user with this email already exists');
-      }
-      
-      else{
-
-          $stmt = $connection->prepare("INSERT INTO users (user_name,user_email,user_password) 
-                          VALUES(?,?,?)");
+      $_SESSION['user_id'] = $user_id;
+      $_SESSION['user_name'] = $user_name;
+      $_SESSION['user_email'] = $user_email;
+      $_SESSION['logged_in'] = true;
 
 
-
-          $stmt->bind_param('sss',$name,$email,md5($password));
-
-          if($stmt->execute()){
-            $_SESSION['user_email'] = $email;
-            $_SESSION['user_name'] = $name;
-            $_SESSION['logged_in'] = true;
-            header('location: account.php?register= you registered successfully');
-          }else{
-
-              header('location: register.php?error= could not create an account at the moment');
-
-          }
-      }
+      header('location: account.php?message=logged in successfully');
     }
+    else{
+      header('location: login.php?error=could not verify account');
+    }
+  
+  }else{
 
+    header('location: login.php?error=something went wrong');
+  }
 }
 
 
@@ -71,14 +51,8 @@ if(isset($_POST['register'])){
 
 
 
+
 ?>
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -94,78 +68,67 @@ if(isset($_POST['register'])){
 <body>
 
 
-    <!--Navbar-->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-white py-3 fixed-top">
-        <div class="container">
-          <img class="logo" src="assets/imgs/ovo_logo_PNG1.png">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse nav-buttons" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Signup</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="shop.html">Shop</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact Us</a>
-              </li>
-              <li class="nav-item">
-                <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
-                <a href="account.html"><i class="fa-solid fa-user"></i></a>
-              </li>
+   <!--Navbar-->
+   <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-white py-3 fixed-top">
+    <div class="container">
+      <img class="logo" src="assets/imgs/ovo_logo_PNG1.png">
+      <a class="navbar-brand" href="#">CBuddy</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse nav-buttons" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="login.php">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="register.php">Signup</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="shop.php">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+              <a href="account.php"><i class="fa-solid fa-user"></i></a>
+            </li>
 
               
           </div>
-        </div>
-      </nav>
-      
+    </div>
+  </nav>
+  
 
-
-
-
-    <!--Register-->
+    <!--Login-->
     <section class="my-5 py-5">
         <div class="container text-center mt-3 pt-5">
-            <h2 class="form-weight-bold">Register</h2>
+            <h2 class="form-weight-bold">Login</h2>
             <hr class="mx-auto">
         </div>
         <div class="mx-auto container">
-            <form id="register-form" method="POST" action="register.php">
-              <p style="color: red"><?php if(isset($_GET['error'])){ echo $_GET['error']; }?></P>
-                <div class="form-group">
-                    <label>name</label>
-                    <input type="text" class="form-control" id="register-name" name="name" placeholder="Name" required/>
-                </div>
+            <form id="register-form" method="POST" action="login.php">
+              <p style="color: red" class="text-center"><?php if(isset($_GET['error'])){ echo $_GET['error']; }?></p>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" class="form-control" id="register-email" name="email" placeholder="Email" required/>
+                    <input type="email" class="form-control" id="login-email" name="email" placeholder="Email" required/>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" id="register-password" name="password" placeholder="password" required/>
+                    <input type="password" class="form-control" id="login-password" name="password" placeholder="password" required/>
                 </div>
                 <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" class="form-control" id="register-confirm-password" name="confirmPassword" placeholder="confirmPassword" required/>
+                    <input type="submit" class="btn" id="login-btn" name="login_btn" value="Login"/>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn" id="register-btn" name="register" value="Register"/>
-                </div>
-                <div class="form-group">
-                    <a id="login-url" class="btn">Do you have  an account? Login here.</a>
+                    <a id="register-url" href="register.php" class="btn">Don't have an account? Register here.</a>
                 </div>
             </form>
         </div>

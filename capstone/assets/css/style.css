@@ -12,7 +12,7 @@
 }
 
 body {
-    font-family: 'Poppins','Arial', sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 h1{
@@ -193,11 +193,32 @@ img{
     cursor:pointer;
     margin-bottom:2rem;
 }
+
 .product img{
     transition: 0.3s all;
 }
 .product:hover img{
     opacity: 0.7;
+}
+.product .buy-btn{
+    background-color: #fb774b;
+    transform: translateY(50px);
+    opacity: 0;
+    transition: 0.3s all;
+    color: #fff;
+}
+
+.shop-buy-btn{
+    background-color: #fb774b;
+    opacity: 1;
+    transition: 0.3s all;
+    color: #fff;
+    text-decoration: none;
+}
+
+.product:hover .buy-btn{
+    transform: translateY(0px);
+    opacity: 1;
 }
 
 hr{
@@ -476,6 +497,7 @@ th:last-child{
 }
 
 /* Account */
+
 
 #account-form {
     width: 50%;

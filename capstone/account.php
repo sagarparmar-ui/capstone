@@ -20,13 +20,6 @@ if(isset($_GET['logout'])){
 
 ?>
 
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,41 +31,42 @@ if(isset($_GET['logout'])){
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
 
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-white py-3 fixed-top">
         <div class="container">
-          <img class="logo" src="assets/imgs/ovo_logo_PNG1.png">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse nav-buttons" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Signup</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="shop.html">Shop</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact Us</a>
-              </li>
-              <li class="nav-item">
-                <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
-                <a href="account.html"><i class="fa-solid fa-user"></i></a>
-              </li>
+        <img class="logo" src="assets/imgs/ovo_logo_PNG1.png">
+        <a class="navbar-brand" href="#">CBuddy</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse nav-buttons" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="login.php">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="register.php">Signup</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="shop.php">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+              <a href="account.php"><i class="fa-solid fa-user"></i></a>
+            </li>
 
               
           </div>
@@ -82,71 +76,70 @@ if(isset($_GET['logout'])){
       
 
 
-    <!--Account-->
-    <section class="my-5 py-5">
-        <div class="row container mx-auto">
-            <div class="text-center mt3 pt-5 col-lg-6 col-md-12 col-sm-12">
-                <h3 class="font-weight-bold">Account information</h3>
-                <hr class="mx-auto">
-                <div class="account-info">
-                    <p>Name<span><?php if(isset($_SESSION['user_name'])){ echo $_SESSION['user_name'];} ?></span></p>
-                    <p>Email<span><?php if(isset($_SESSION['user_email'])){ echo $_SESSION['user_email'];} ?></span></p>
-                    <p><a href="#" id="orders-btn">Your orders</a></p>
-                    <p><a href="account.php?logout=1" id="logout-btn">Logout</a></p>
+    
+<!-- Account Information and Change Password -->
+<section class="my-5 py-5">
+    <div class="container my-5 py-5">
+        <div class="row">
+            <!-- Account Information -->
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="text-center">
+                    <h3 class="font-weight-bold">Account Information</h3>
+                    <hr class="mx-auto">
+                    <div class="account-info">
+                        <p>Name: <span><?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name'] : ''; ?></span></p>
+                        <p>Email: <span><?php echo isset($_SESSION['user_email']) ? $_SESSION['user_email'] : ''; ?></span></p>
+                        <p><a href="#" id="orders-btn">Your orders</a></p>
+                        <p><a href="account.php?logout=1" id="logout-btn">Logout</a></p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-lg-6 col-md-12 col-sm-12">
-            <form id="account-info">
-                <h3>Change Password</h3>
-                <hr class="mx-auto">
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" id="account-password" name="password" placeholder="password" required/>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" class="form-control" id="account-password-confirm" name="confirmPassword" placeholder="confirmPassword" required/>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Change Password" class="btn" id="change-pass-btn">
-                </div>
-            </form>
-        </div>
-    </section>
-
-
-     <!--Orders-->
-     <section class="orders container my-5 py-3">
-        <div class="container mt-2">
-            <h2 class="font-weight-bold text-center">Your Orders</h2>
-            <hr  class="mx-auto">
-        </div>
-
-        <table class="mt-5 pt-5">
-            <tr>
-                <th>Product</th>
-                <th>Date</th>
-            </tr>
-            <tr>
-                <td>
-                   <div class="product-info">
-                    <img src="assets/imgs/watch.jpeg"/>
-                    <div>
-                        <p class="mt-3">White Shoes</p>
+            <!-- Change Password -->
+            <div class="col-lg-6 col-md-6 col-sm-12 text-center">
+                <form class="change-password-form">
+                    <h3>Change Password</h3>
+                    <hr class="mx-auto">
+                    <div class="form-group my-2 py-2">
+                        <label for="account-password">New Password</label>
+                        <input type="password" class="form-control" id="account-password" name="password" placeholder="New Password" required>
                     </div>
-                   </div> 
-                </td>
+                    <div class="form-group my-2 py-2">
+                        <label for="account-password-confirm">Confirm New Password</label>
+                        <input type="password" class="form-control" id="account-password-confirm" name="confirmPassword" placeholder="Confirm New Password" required>
+                    </div>
+                    <div class="form-group my-2 py-2">
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <td>
-                    <span>2024-02-01</span>
-                </td>
-            </tr>
-           
-        </table>
-
-    </section>
+<!-- Orders -->
+<section class="orders container my-5 py-3">
+    <div class="container">
+        <h2 class="font-weight-bold text-center">Your Orders</h2>
+        <hr class="mx-auto">
+    </div>
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Date</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="product-info">
+                    <img src="assets/imgs/watch.jpeg" alt="Product Image">
+                    <span>White Shoes</span>
+                </div>
+            </td>
+            <td>
+                <span>2024-02-01</span>
+            </td>
+        </tr>
+    </table>
+</section>
 
 
     <!-- footer -->

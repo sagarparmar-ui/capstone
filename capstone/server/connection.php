@@ -13,7 +13,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-echo "Connected successfully";
+
 
 // Close the connection
 // $connection->close();
