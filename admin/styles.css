@@ -1,0 +1,61 @@
+/* style.css */
+
+/* Navbar */
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.sidebar .list-group-item {
+    background-color: transparent;
+    color: #ffffff;
+    border: none;
+}
+
+.sidebar .list-group-item.active {
+    background-color: #212529;
+}
+
+/* Content */
+.content {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table */
+.table {
+    background-color: #ffffff;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination .page-link {
+    color: #007bff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
